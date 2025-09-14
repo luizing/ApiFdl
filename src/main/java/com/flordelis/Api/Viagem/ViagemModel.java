@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -17,7 +17,7 @@ public class ViagemModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date data;
+    private LocalDate data;
     private String rota;
     private int carga;
 
@@ -25,7 +25,7 @@ public class ViagemModel {
     private int avariados;
 
     // Cria a viagem com os atributos disponiveis antes dela ser concluida.
-    public ViagemModel(String rota, Date data, int carga) {
+    public ViagemModel(String rota, LocalDate data, int carga) {
         this.rota = rota;
         this.data = data;
         this.carga = carga;
