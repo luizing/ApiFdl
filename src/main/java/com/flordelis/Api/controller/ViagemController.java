@@ -1,6 +1,7 @@
 package com.flordelis.Api.controller;
 import com.flordelis.Api.model.ViagemModel;
 import com.flordelis.Api.service.ViagemService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,6 @@ public class ViagemController {
     public List<ViagemModel> getByDate(@PathVariable("date")LocalDate date){return viagemService.findByData(date);}
 
     @PostMapping
-    public ViagemModel create(@RequestBody ViagemModel viagem) {return viagemService.create(viagem);}
+    public ViagemModel create(@Valid @RequestBody ViagemModel viagem) {return viagemService.create(viagem);}
 
 }

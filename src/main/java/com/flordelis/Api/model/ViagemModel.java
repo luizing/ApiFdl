@@ -1,15 +1,15 @@
 package com.flordelis.Api.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.time.LocalDate;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "tb_viagens")
 public class ViagemModel {
@@ -17,18 +17,14 @@ public class ViagemModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     private LocalDate data;
+    @NotNull
     private String rota;
+    @NotNull
     private int carga;
 
     private float valor;
     private int avariados;
-
-    // Cria a viagem com os atributos disponiveis antes dela ser concluida.
-    public ViagemModel(String rota, LocalDate data, int carga) {
-        this.rota = rota;
-        this.data = data;
-        this.carga = carga;
-    }
 
 }
