@@ -1,4 +1,5 @@
 package com.flordelis.Api.controller;
+import com.flordelis.Api.dto.CriarViagemDTO;
 import com.flordelis.Api.model.ViagemModel;
 import com.flordelis.Api.service.ViagemService;
 import jakarta.validation.Valid;
@@ -41,7 +42,7 @@ public class ViagemController {
     }
 
     @PostMapping
-    public ResponseEntity<ViagemModel> create(@Valid @RequestBody ViagemModel viagem) {
-        ViagemModel novaViagem = viagemService.create(viagem);
+    public ResponseEntity<ViagemModel> create(@Valid @RequestBody CriarViagemDTO dto) {
+        ViagemModel novaViagem = viagemService.create(dto.converter());
         return new ResponseEntity<>(novaViagem,HttpStatus.CREATED);}
 }

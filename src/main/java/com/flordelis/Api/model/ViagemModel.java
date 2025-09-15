@@ -27,4 +27,10 @@ public class ViagemModel {
     private float valor;
     private int avariados;
 
+    public ViagemModel(LocalDate data, String rota, int carga){
+        this.data = data;
+        this.rota = rota;
+        this.carga = carga;
+    }
+
 }
