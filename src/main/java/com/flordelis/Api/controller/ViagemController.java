@@ -2,6 +2,7 @@ package com.flordelis.Api.controller;
 import com.flordelis.Api.model.ViagemModel;
 import com.flordelis.Api.service.ViagemService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +41,7 @@ public class ViagemController {
     }
 
     @PostMapping
-    public ViagemModel create(@Valid @RequestBody ViagemModel viagem) {return viagemService.create(viagem);}
-
+    public ResponseEntity<ViagemModel> create(@Valid @RequestBody ViagemModel viagem) {
+        ViagemModel novaViagem = viagemService.create(viagem);
+        return new ResponseEntity<>(novaViagem,HttpStatus.CREATED);}
 }
