@@ -2,6 +2,7 @@ package com.flordelis.Api.controller;
 import com.flordelis.Api.model.ViagemModel;
 import com.flordelis.Api.service.ViagemService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,13 +21,23 @@ public class ViagemController {
     }
 
     @GetMapping
-    public List<ViagemModel> getAll(){return viagemService.getAll();}
+    public ResponseEntity<List<ViagemModel>> getAll(){
+        List<ViagemModel> viagens = viagemService.getAll();
+        return ResponseEntity.ok(viagens);
+    }
 
     @GetMapping("/{id}")
-    public Optional<ViagemModel> getById(@PathVariable("id")Long id){return viagemService.getById(id);}
+    public ResponseEntity<ViagemModel> getById(@PathVariable("id")Long id){
+        Optional<ViagemModel> viagem = viagemService.getById(id);
+        return viagem.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 
     @GetMapping("/data/{date}")
-    public List<ViagemModel> getByDate(@PathVariable("date")LocalDate date){return viagemService.findByData(date);}
+    public ResponseEntity<List<ViagemModel>> getByDate(@PathVariable("date")LocalDate date){
+        List<ViagemModel> viagens = viagemService.findByData(date);
+        return ResponseEntity.ok(viagens);
+    }
 
     @PostMapping
     public ViagemModel create(@Valid @RequestBody ViagemModel viagem) {return viagemService.create(viagem);}
