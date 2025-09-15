@@ -1,6 +1,7 @@
-package com.flordelis.Api.Viagem;
+package com.flordelis.Api.service;
 
-import org.springframework.cglib.core.Local;
+import com.flordelis.Api.model.ViagemModel;
+import com.flordelis.Api.repository.ViagemRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

@@ -1,5 +1,6 @@
-package com.flordelis.Api.Viagem;
-import org.springframework.http.ResponseEntity;
+package com.flordelis.Api.controller;
+import com.flordelis.Api.model.ViagemModel;
+import com.flordelis.Api.service.ViagemService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

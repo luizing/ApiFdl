@@ -1,4 +1,4 @@
-package com.flordelis.Api.Viagem;
+package com.flordelis.Api.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
