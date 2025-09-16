@@ -1,0 +1,356 @@
+{
+	"info": {
+		"_postman_id": "b07ac4b9-f8f6-4465-aef6-06589a76e9aa",
+		"name": "Testes API fdl",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48468039",
+		"_collection_link": "https://luizing-22e25b15-2521888.postman.co/workspace/Luiz-Eduardo's-Workspace~e47fead9-6204-4c67-88b8-517cb1329fc0/collection/48468039-b07ac4b9-f8f6-4465-aef6-06589a76e9aa?action=share&source=collection_link&creator=48468039"
+	},
+	"item": [
+		{
+			"name": "viagem/ vazio",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var schema = {",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",",
+							"  \"type\": \"array\",",
+							"  \"items\": {",
+							"    \"type\": \"object\",",
+							"    \"properties\": {",
+							"      \"id\": { \"type\": \"integer\" },",
+							"      \"data\": { \"type\": \"string\" },",
+							"      \"rota\": { \"type\": \"string\" },",
+							"      \"carga\": { \"type\": \"integer\" },",
+							"      \"valor\": { \"type\": \"number\" },",
+							"      \"avariados\": { \"type\": \"integer\" }",
+							"    },",
+							"    \"required\": [\"id\", \"data\", \"rota\", \"carga\", \"valor\", \"avariados\"]",
+							"  }",
+							"};",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Retorna Lista de Viagem",
+							"pm.test('Estrutura do body', function(){",
+							"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+							"});",
+							"",
+							"// Itens Nao nulos estao preenchidos",
+							"pm.test(\"Itens nao nulos\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    jsonData.forEach(function(item) {",
+							"        pm.expect(item.id).to.not.be.null;",
+							"        pm.expect(item.data).to.not.be.null;",
+							"        pm.expect(item.rota).to.not.be.null;",
+							"    });",
+							"});",
+							"",
+							"// Testa se a resposta é uma lista vazia",
+							"pm.test(\"Resposta é lista vazia\", function () {",
+							"    pm.expect(Array.isArray(jsonData) && jsonData.length === 0).to.be.true;",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/viagem",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"viagem"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "viagem/",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Response has all required properties with correct types\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('id').that.is.a('number');",
+							"    pm.expect(jsonData).to.have.property('data').that.is.a('string');",
+							"    pm.expect(jsonData).to.have.property('rota').that.is.a('string');",
+							"    pm.expect(jsonData).to.have.property('carga').that.is.a('number');",
+							"    pm.expect(jsonData).to.have.property('valor').that.is.a('number');",
+							"    pm.expect(jsonData).to.have.property('avariados').that.is.a('number');",
+							"});",
+							"",
+							"pm.test(\"ID maior que 0\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.id).to.be.above(0);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 1s\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"rota\": \"{{rota}}\",\r\n    \"data\": \"{{data}}\",\r\n    \"carga\": {{carga}}\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/viagem",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"viagem"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Horizonte",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"rota\": \"Horizonte\",\r\n  \"data\": \"2025-11-13\",\r\n  \"carga\": 920\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/viagem",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"viagem"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Pacajus",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"rota\": \"Pacajus\",\r\n    \"data\": \"2025-11-14\",\r\n    \"carga\": 500\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/viagem",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"viagem"
+							]
+						}
+					},
+					"_postman_previewlanguage": "",
+					"header": [],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"domain": "",
+							"path": ""
+						}
+					],
+					"body": ""
+				},
+				{
+					"name": "Horizonte2",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"rota\": \"Horizonte\",\r\n  \"data\": \"2025-11-14\",\r\n  \"carga\": 920\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/viagem",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"viagem"
+							]
+						}
+					},
+					"_postman_previewlanguage": "",
+					"header": [],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"domain": "",
+							"path": ""
+						}
+					],
+					"body": ""
+				},
+				{
+					"name": "Serra-Felix",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"rota\": \"Serra-Felix\",\r\n  \"data\": \"2025-11-12\",\r\n  \"carga\": 920\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/viagem",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"viagem"
+							]
+						}
+					},
+					"_postman_previewlanguage": "",
+					"header": [],
+					"cookie": [
+						{
+							"expires": "Invalid Date",
+							"domain": "",
+							"path": ""
+						}
+					],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "viagem/id notFound",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 404\", function () {",
+							"    pm.expect(pm.response.code).to.equal(404);",
+							"});",
+							"",
+							"",
+							"",
+							"pm.test(\"Response body is empty or contains not found message\", function () {",
+							"    var body = pm.response.text();",
+							"    pm.expect(body === \"\" || body.toLowerCase().includes(\"not found\") || body.toLowerCase().includes(\"nao encontrado\")).to.be.true;",
+							"    });",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/viagem/1111",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"viagem",
+						"1111"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
