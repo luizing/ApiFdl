@@ -1,5 +1,6 @@
 package com.flordelis.Api.controller;
 import com.flordelis.Api.dto.CriarViagemDTO;
+import com.flordelis.Api.dto.FinalizarViagemDTO;
 import com.flordelis.Api.model.ViagemModel;
 import com.flordelis.Api.service.ViagemService;
 import jakarta.validation.Valid;
@@ -45,4 +46,11 @@ public class ViagemController {
     public ResponseEntity<ViagemModel> create(@Valid @RequestBody CriarViagemDTO dto) {
         ViagemModel novaViagem = viagemService.create(dto.converter());
         return new ResponseEntity<>(novaViagem,HttpStatus.CREATED);}
+
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ViagemModel> finalizar(@PathVariable Long id, @RequestBody FinalizarViagemDTO dto){
+    ViagemModel viagemFinalizada = viagemService.finalizar(id, dto);
+    return ResponseEntity.ok(viagemFinalizada);
+    }
 }

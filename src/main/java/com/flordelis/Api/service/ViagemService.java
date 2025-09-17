@@ -1,7 +1,10 @@
 package com.flordelis.Api.service;
 
+import com.flordelis.Api.dto.CriarViagemDTO;
+import com.flordelis.Api.dto.FinalizarViagemDTO;
 import com.flordelis.Api.model.ViagemModel;
 import com.flordelis.Api.repository.ViagemRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,6 +31,18 @@ public class ViagemService {
 
     //Adicionar Viagem
     public ViagemModel create(ViagemModel viagem){return viagemRepository.save(viagem);}
+
+    //Finalizar Viagem
+    public ViagemModel finalizar(Long id, FinalizarViagemDTO dto){
+        ViagemModel viagem = viagemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Viagem não encontrada com id " + id));
+
+        viagem.setValor(dto.getValor());
+        viagem.setAvariados(dto.getAvariados());
+        viagem.setFinalizada(true);
+
+        return viagemRepository.save(viagem);
+    }
 
     //Deletar Viagem
     public void delete(Long id){viagemRepository.deleteById(id);}

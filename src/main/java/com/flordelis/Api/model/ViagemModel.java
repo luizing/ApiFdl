@@ -24,6 +24,8 @@ public class ViagemModel {
     @NotNull
     private int carga;
 
+    private boolean finalizada = false;
+
     private float valor;
     private int avariados;
 
