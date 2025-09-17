@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ViagemRepository extends JpaRepository<ViagemModel,Long> {
     List<ViagemModel> findByData(LocalDate data);
+    List<ViagemModel> findByFinalizada(boolean finalizada);
 }

@@ -29,6 +29,9 @@ public class ViagemService {
     //Listar viagens por data
     public List<ViagemModel> findByData(LocalDate data){return viagemRepository.findByData(data);}
 
+    //Listar viagens abertas/finalizadas
+    public List<ViagemModel> findByFinalizada(boolean finalizada){return viagemRepository.findByFinalizada(finalizada);}
+
     //Adicionar Viagem
     public ViagemModel create(ViagemModel viagem){return viagemRepository.save(viagem);}
 

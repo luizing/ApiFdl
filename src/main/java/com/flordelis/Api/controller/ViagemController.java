@@ -36,6 +36,18 @@ public class ViagemController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/abertas")
+    public ResponseEntity<List<ViagemModel>> getByAbertas(){
+        List<ViagemModel> viagens = viagemService.findByFinalizada(false);
+        return ResponseEntity.ok(viagens);
+    }
+
+    @GetMapping("/finalizadas")
+    public ResponseEntity<List<ViagemModel>> getByFinalizada(){
+        List<ViagemModel> viagens = viagemService.findByFinalizada(true);
+        return ResponseEntity.ok(viagens);
+    }
+
     @GetMapping("/data/{date}")
     public ResponseEntity<List<ViagemModel>> getByDate(@PathVariable("date")LocalDate date){
         List<ViagemModel> viagens = viagemService.findByData(date);
