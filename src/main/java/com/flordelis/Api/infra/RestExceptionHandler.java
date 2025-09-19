@@ -16,4 +16,17 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         RestErrorMessage resposta = new RestErrorMessage(HttpStatus.NOT_FOUND, exception.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resposta);
     }
+
+    // Captura qualquer exceção não tratada
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<RestErrorMessage> handleGenericException(Exception ex) {
+
+        // Todo: Implementar logger que exibe no servidor o erro expecífico.
+
+        RestErrorMessage resposta = new RestErrorMessage(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "Ocorreu um erro inesperado. Por favor, tente novamente mais tarde."
+        );
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resposta);
+    }
 }
