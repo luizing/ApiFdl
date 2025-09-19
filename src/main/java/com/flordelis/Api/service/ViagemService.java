@@ -2,6 +2,7 @@ package com.flordelis.Api.service;
 
 import com.flordelis.Api.dto.CriarViagemDTO;
 import com.flordelis.Api.dto.FinalizarViagemDTO;
+import com.flordelis.Api.exception.ViagemNotFoundException;
 import com.flordelis.Api.model.ViagemModel;
 import com.flordelis.Api.repository.ViagemRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -23,8 +24,12 @@ public class ViagemService {
     //Listar todas as viagens
     public List<ViagemModel> getAll(){return viagemRepository.findAll();}
 
+
     //Listar viagem por id
-    public Optional<ViagemModel> getById(Long id){return viagemRepository.findById(id);}
+    public Optional<ViagemModel> getById(Long id){
+        if (viagemRepository.findById(id).isEmpty()) {throw new ViagemNotFoundException();}
+        return viagemRepository.findById(id);
+    }
 
     //Listar viagens por data
     public List<ViagemModel> findByData(LocalDate data){return viagemRepository.findByData(data);}
