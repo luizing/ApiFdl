@@ -1,6 +1,7 @@
 package com.flordelis.Api.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -17,11 +18,11 @@ public class ViagemModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
+    @NotNull(message = "A data não pode ser nula")
     private LocalDate data;
-    @NotNull
+    @NotBlank(message = "A rota não pode estar vazia")
     private String rota;
-    @NotNull
+    @NotNull(message = "A carga não pode ser nula")
     private int carga;
 
     private boolean finalizada = false;
