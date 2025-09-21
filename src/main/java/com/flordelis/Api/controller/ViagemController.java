@@ -33,13 +33,12 @@ public class ViagemController {
         return ResponseEntity.ok(viagens);
     }
 
-    // Consertar log e retorno de erro
     @GetMapping("/{id}")
-    public ResponseEntity<ViagemModel> getById(@PathVariable("id")Long id){
-        log.info("Viagem Request findById {}",id);
-        Optional<ViagemModel> viagem = viagemService.getById(id);
-        return viagem.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<ViagemModel> getById(@PathVariable Long id){
+        log.info("POST /viagem/{} -> buscando viagem por id {}",id,id);
+        ViagemModel viagem = viagemService.getById(id);
+        log.info("POST /viagem/{id} -> retorna viagem {}",viagem.getId());
+        return ResponseEntity.ok(viagem);
     }
 
     @GetMapping("/abertas")

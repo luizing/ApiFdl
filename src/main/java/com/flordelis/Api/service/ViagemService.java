@@ -26,9 +26,9 @@ public class ViagemService {
 
 
     //Listar viagem por id
-    public Optional<ViagemModel> getById(Long id){
-        if (viagemRepository.findById(id).isEmpty()) {throw new ViagemNotFoundException();}
-        return viagemRepository.findById(id);
+    public ViagemModel getById(Long id){
+        return viagemRepository.findById(id)
+                .orElseThrow(ViagemNotFoundException::new);
     }
 
     //Listar viagens por data
