@@ -29,15 +29,16 @@ public class ViagemController {
         log.info("GET /viagem -> buscando todas as viagens");
         List<ViagemModel> viagens = viagemService.getAll();
         log.debug("Resultado da consulta getAll: {}", viagens);
-        log.info("GET /viagem -> retorno {} viagens",viagens.size());
+        log.info("GET /viagem -> retorno {} viagens", viagens.size());
         return ResponseEntity.ok(viagens);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ViagemModel> getById(@PathVariable Long id){
-        log.info("GET /viagem/{} -> buscando viagem por id {}",id,id);
+        log.info("GET /viagem/{} -> buscando viagem por id {}", id, id);
         ViagemModel viagem = viagemService.getById(id);
-        log.info("GET /viagem/{id} -> retorna viagem {}",viagem.getId());
+        log.debug("GET /viagem/{} -> detalhes da viagem retornada: {}", id, viagem);
+        log.info("GET /viagem/{id} -> retorna viagem {}", viagem.getId());
         return ResponseEntity.ok(viagem);
     }
 
@@ -46,7 +47,7 @@ public class ViagemController {
         log.info("GET /viagem/abertas -> buscando viagens em aberto");
         List<ViagemModel> viagens = viagemService.findByFinalizada(false);
         log.debug("Resultado da consulta findByAbertas: {}", viagens);
-        log.info("GET /viagem/abertas -> retorno {} viagens",viagens.size());
+        log.info("GET /viagem/abertas -> retorno {} viagens", viagens.size());
         return ResponseEntity.ok(viagens);
     }
 
@@ -55,7 +56,7 @@ public class ViagemController {
         log.info("GET /viagem/finalizadas -> buscando viagens finalizadas");
         List<ViagemModel> viagens = viagemService.findByFinalizada(true);
         log.debug("Resultado da consulta findByFinalizadas: {}", viagens);
-        log.info("GET /viagem/finalizadas -> retorno {} viagens",viagens.size());
+        log.info("GET /viagem/finalizadas -> retorno {} viagens", viagens.size());
         return ResponseEntity.ok(viagens);
     }
 
@@ -89,6 +90,7 @@ public class ViagemController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
         log.info("DELETE /viagem/{} -> deletar viagem", id);
+        log.debug("DELETE /viagem/{} -> detalhes da viagem deletada: {}", id, viagemService.getById(id));
         viagemService.delete(id);
         log.info("DELETE /viagem/{} -> viagem deletada com sucesso", id);
         return ResponseEntity.noContent().build();
