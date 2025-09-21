@@ -36,4 +36,16 @@ public class ViagemModel {
         this.carga = carga;
     }
 
+    @Override
+    public String toString(){
+        return "{id -> " + id +
+                "data -> " + data +
+                "; rota -> " + rota +
+                "; carga -> " + carga +
+                "; finalizada -> " + finalizada +
+                "; valor -> " + valor +
+                "; avariados -> " + avariados +
+                "}";
+    }
+
 }

@@ -29,6 +29,7 @@ public class ViagemController {
     public ResponseEntity<List<ViagemModel>> getAll(){
         log.info("GET /viagem -> buscando todas as viagens");
         List<ViagemModel> viagens = viagemService.getAll();
+        log.debug("Resultado da consulta getAll: {}", viagens);
         log.info("GET /viagem -> retorno {} viagens",viagens.size());
         return ResponseEntity.ok(viagens);
     }
@@ -45,6 +46,7 @@ public class ViagemController {
     public ResponseEntity<List<ViagemModel>> getByAbertas(){
         log.info("GET /viagem/abertas -> buscando viagens em aberto");
         List<ViagemModel> viagens = viagemService.findByFinalizada(false);
+        log.debug("Resultado da consulta findByAbertas: {}", viagens);
         log.info("GET /viagem/abertas -> retorno {} viagens",viagens.size());
         return ResponseEntity.ok(viagens);
     }
@@ -53,6 +55,7 @@ public class ViagemController {
     public ResponseEntity<List<ViagemModel>> getByFinalizada(){
         log.info("GET /viagem/finalizadas -> buscando viagens finalizadas");
         List<ViagemModel> viagens = viagemService.findByFinalizada(true);
+        log.debug("Resultado da consulta findByFinalizadas: {}", viagens);
         log.info("GET /viagem/finalizadas -> retorno {} viagens",viagens.size());
         return ResponseEntity.ok(viagens);
     }
@@ -61,6 +64,7 @@ public class ViagemController {
     public ResponseEntity<List<ViagemModel>> getByDate(@PathVariable("date")LocalDate date){
         log.info("GET /viagem/data/{date} -> buscando viagens pela data {}",date);
         List<ViagemModel> viagens = viagemService.findByData(date);
+        log.debug("Resultado da consulta findByData: {}", viagens);
         log.info("GET /viagem/data/{date} -> retorno {} viagens",viagens.size());
         return ResponseEntity.ok(viagens);
     }
@@ -69,6 +73,7 @@ public class ViagemController {
     public ResponseEntity<ViagemModel> create(@Valid @RequestBody CriarViagemDTO dto) {
         log.info("POST /viagem -> criando viagem com dados: {}", dto);
         ViagemModel novaViagem = viagemService.create(dto.converter());
+        log.debug("POST /viagem -> detalhes da viagem criada: {}", novaViagem);
         log.info("POST /viagem -> viagem criada com id: {}", novaViagem.getId());
         return new ResponseEntity<>(novaViagem,HttpStatus.CREATED);}
 
@@ -77,6 +82,7 @@ public class ViagemController {
     public ResponseEntity<ViagemModel> finalizar(@PathVariable Long id, @RequestBody FinalizarViagemDTO dto){
         log.info("PATCH /viagem/{} -> finalizando viagem", id);
         ViagemModel viagemFinalizada = viagemService.finalizar(id, dto);
+        log.debug("PATCH /viagem/{} -> detalhes da viagem finalizada: {}",id, viagemFinalizada);
         log.info("PATCH /viagem/{} -> viagem finalizada com sucesso", id);
         return ResponseEntity.ok(viagemFinalizada);
     }
