@@ -1,5 +1,6 @@
 package com.flordelis.Api.infra;
 
+import com.flordelis.Api.exception.ViagemAlreadyFinishedException;
 import com.flordelis.Api.exception.ViagemNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<RestErrorMessage> viagemNotFoundHandler(ViagemNotFoundException exception){
         RestErrorMessage resposta = new RestErrorMessage(HttpStatus.NOT_FOUND, exception.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resposta);
+    }
+
+    // Viagem já foi finalizada (400)
+    @ExceptionHandler(ViagemAlreadyFinishedException.class)
+    private ResponseEntity<RestErrorMessage> ViagemAlreadyFinishedHandler(ViagemAlreadyFinishedException exception){
+        RestErrorMessage resposta = new RestErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resposta);
     }
 
     // Captura qualquer exceção não tratada
