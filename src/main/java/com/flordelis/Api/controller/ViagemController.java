@@ -35,9 +35,9 @@ public class ViagemController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ViagemModel> getById(@PathVariable Long id){
-        log.info("POST /viagem/{} -> buscando viagem por id {}",id,id);
+        log.info("GET /viagem/{} -> buscando viagem por id {}",id,id);
         ViagemModel viagem = viagemService.getById(id);
-        log.info("POST /viagem/{id} -> retorna viagem {}",viagem.getId());
+        log.info("GET /viagem/{id} -> retorna viagem {}",viagem.getId());
         return ResponseEntity.ok(viagem);
     }
 
