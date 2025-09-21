@@ -53,5 +53,8 @@ public class ViagemService {
     }
 
     //Deletar Viagem
-    public void delete(Long id){viagemRepository.deleteById(id);}
+    public void delete(Long id){
+        ViagemModel viagem = viagemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Viagem não encontrada com id " + id));
+        viagemRepository.delete(viagem);}
 }

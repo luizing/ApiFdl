@@ -86,4 +86,12 @@ public class ViagemController {
         log.info("PATCH /viagem/{} -> viagem finalizada com sucesso", id);
         return ResponseEntity.ok(viagemFinalizada);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        log.info("DELETE /viagem/{} -> deletar viagem", id);
+        viagemService.delete(id);
+        log.info("DELETE /viagem/{} -> viagem deletada com sucesso", id);
+        return ResponseEntity.noContent().build();
+    }
 }
