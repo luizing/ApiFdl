@@ -69,7 +69,7 @@ public class ViagemController {
     public ResponseEntity<ViagemModel> create(@Valid @RequestBody CriarViagemDTO dto) {
         log.info("POST /viagem -> criando viagem com dados: {}", dto);
         ViagemModel novaViagem = viagemService.create(dto.converter());
-        log.info("POST /viagem -> viagem criada com id = {}", novaViagem.getId());
+        log.info("POST /viagem -> viagem criada com id: {}", novaViagem.getId());
         return new ResponseEntity<>(novaViagem,HttpStatus.CREATED);}
 
 

@@ -14,4 +14,11 @@ public class CriarViagemDTO {
     public ViagemModel converter(){
         return new ViagemModel(data, rota, carga);
     }
+
+    @Override
+    public String toString(){
+        return "{data -> " + data +
+                "; rota -> " + rota +
+                "; carga -> " + carga + "}";
+    }
 }
