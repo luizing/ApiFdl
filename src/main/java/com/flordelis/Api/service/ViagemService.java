@@ -4,6 +4,7 @@ import com.flordelis.Api.dto.CriarViagemDTO;
 import com.flordelis.Api.dto.FinalizarViagemDTO;
 import com.flordelis.Api.exception.ViagemAlreadyFinishedException;
 import com.flordelis.Api.exception.ViagemNotFoundException;
+import com.flordelis.Api.model.ItemVenda;
 import com.flordelis.Api.model.ViagemModel;
 import com.flordelis.Api.repository.ViagemRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -48,8 +49,11 @@ public class ViagemService {
 
         if (viagem.isFinalizada()) {throw new ViagemAlreadyFinishedException();}
 
-        viagem.setValor(dto.getValor());
+        viagem.setPrecos(dto.getPrecos());
         viagem.setAvariados(dto.getAvariados());
+        viagem.setRetorno(dto.getRetorno());
+        viagem.setBonus(dto.getBonus());
+        viagem.setKms(dto.getKms());
         viagem.setFinalizada(true);
 
         return viagemRepository.save(viagem);
