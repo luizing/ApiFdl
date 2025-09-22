@@ -4,12 +4,12 @@ import com.flordelis.Api.exception.ViagemAlreadyFinishedException;
 import com.flordelis.Api.exception.ViagemNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+public class RestExceptionHandler{
 
     // Viagem não encontrada (404)
     @ExceptionHandler(ViagemNotFoundException.class)
@@ -24,6 +24,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         RestErrorMessage resposta = new RestErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resposta);
     }
+
+    // Not readable
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<RestErrorMessage> handleInvalidType(HttpMessageNotReadableException exception) {
+        RestErrorMessage resposta = new RestErrorMessage(HttpStatus.BAD_REQUEST,exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resposta);
+    }
+
 
     // Captura qualquer exceção não tratada
     @ExceptionHandler(Exception.class)

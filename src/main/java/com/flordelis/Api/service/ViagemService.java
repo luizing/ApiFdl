@@ -3,8 +3,6 @@ package com.flordelis.Api.service;
 import com.flordelis.Api.dto.FinalizarViagemDTO;
 import com.flordelis.Api.exception.ViagemAlreadyFinishedException;
 import com.flordelis.Api.exception.ViagemNotFoundException;
-import com.flordelis.Api.model.Avarias;
-import com.flordelis.Api.model.ItemAvariado;
 import com.flordelis.Api.model.ViagemModel;
 import com.flordelis.Api.repository.ViagemRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -48,21 +46,7 @@ public class ViagemService {
 
         if (viagem.isFinalizada()) {throw new ViagemAlreadyFinishedException();}
 
-        // Valida se o tipo de avaria é valido
-        for (ItemAvariado avariado : dto.getAvariados()) {
-            boolean tipoValido = false;
-            for (Avarias a : Avarias.values()) {
-                if (avariado.getTipo() == a) {
-                    tipoValido = true;
-                    break;
-                }
-            }
-            if (!tipoValido) {
-                throw new IllegalArgumentException("Tipo de avaria inválido: " + avariado.getTipo());
-            }
-        }
         viagem.finalizar(dto);
-
         return viagemRepository.save(viagem);
     }
 
