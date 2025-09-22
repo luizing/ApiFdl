@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -15,6 +17,7 @@ import java.time.LocalDate;
 @Table(name = "tb_viagens")
 public class ViagemModel {
 
+    // Atributos de criação da viagem
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,11 +28,24 @@ public class ViagemModel {
     @NotNull(message = "A carga não pode ser nula")
     private int carga;
 
+    /*
+            Campos a serem adicionados após modelagem das outras classes.
+    @NotNull(message = "O veiculo não pode ser nulo")
+    private Veiculo veiculo;
+    @NotBlank(message = "A lista de funcionários não pode ser nula")
+    private List<FuncionarioModel> funcionarios;
+    */
+
     private boolean finalizada = false;
 
-    private float valor;
-    private int avariados;
+    // Atributos de finalização de viagem
+    private List<ItemVenda> precos = new ArrayList<>();
+    private List<ItemAvariado> avariados = new ArrayList<>();
+    private int retorno;
+    private int bonus;
+    private int kms;
 
+    // Contrutor de criação de viagem
     public ViagemModel(LocalDate data, String rota, int carga){
         this.data = data;
         this.rota = rota;
@@ -39,11 +55,11 @@ public class ViagemModel {
     @Override
     public String toString(){
         return "{id -> " + id +
-                "data -> " + data +
+                "; data -> " + data +
                 "; rota -> " + rota +
                 "; carga -> " + carga +
                 "; finalizada -> " + finalizada +
-                "; valor -> " + valor +
+                "; valor -> " + precos +
                 "; avariados -> " + avariados +
                 "}";
     }
