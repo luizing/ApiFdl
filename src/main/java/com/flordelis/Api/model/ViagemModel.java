@@ -1,8 +1,10 @@
 package com.flordelis.Api.model;
 
+import com.flordelis.Api.dto.FinalizarViagemDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -39,10 +41,15 @@ public class ViagemModel {
     private boolean finalizada = false;
 
     // Atributos de finalização de viagem
+    @ElementCollection
     private List<ItemVenda> precos = new ArrayList<>();
+    @ElementCollection
     private List<ItemAvariado> avariados = new ArrayList<>();
+    @PositiveOrZero(message = "O retorno não pode ser negativo")
     private int retorno;
+    @PositiveOrZero(message = "O bônus não pode ser negativo")
     private int bonus;
+    @PositiveOrZero(message = "Os quilômetros não podem ser negativos")
     private int kms;
 
     // Contrutor de criação de viagem
@@ -50,6 +57,15 @@ public class ViagemModel {
         this.data = data;
         this.rota = rota;
         this.carga = carga;
+    }
+
+    public void finalizar(FinalizarViagemDTO dto){
+        this.setPrecos(dto.getPrecos());
+        this.setAvariados(dto.getAvariados());
+        this.setRetorno(dto.getRetorno());
+        this.setBonus(dto.getBonus());
+        this.setKms(dto.getKms());
+        this.setFinalizada(true);
     }
 
     @Override

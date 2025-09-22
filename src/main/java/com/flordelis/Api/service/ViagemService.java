@@ -1,10 +1,10 @@
 package com.flordelis.Api.service;
 
-import com.flordelis.Api.dto.CriarViagemDTO;
 import com.flordelis.Api.dto.FinalizarViagemDTO;
 import com.flordelis.Api.exception.ViagemAlreadyFinishedException;
 import com.flordelis.Api.exception.ViagemNotFoundException;
-import com.flordelis.Api.model.ItemVenda;
+import com.flordelis.Api.model.Avarias;
+import com.flordelis.Api.model.ItemAvariado;
 import com.flordelis.Api.model.ViagemModel;
 import com.flordelis.Api.repository.ViagemRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ViagemService {
@@ -49,12 +48,20 @@ public class ViagemService {
 
         if (viagem.isFinalizada()) {throw new ViagemAlreadyFinishedException();}
 
-        viagem.setPrecos(dto.getPrecos());
-        viagem.setAvariados(dto.getAvariados());
-        viagem.setRetorno(dto.getRetorno());
-        viagem.setBonus(dto.getBonus());
-        viagem.setKms(dto.getKms());
-        viagem.setFinalizada(true);
+        // Valida se o tipo de avaria é valido
+        for (ItemAvariado avariado : dto.getAvariados()) {
+            boolean tipoValido = false;
+            for (Avarias a : Avarias.values()) {
+                if (avariado.getTipo() == a) {
+                    tipoValido = true;
+                    break;
+                }
+            }
+            if (!tipoValido) {
+                throw new IllegalArgumentException("Tipo de avaria inválido: " + avariado.getTipo());
+            }
+        }
+        viagem.finalizar(dto);
 
         return viagemRepository.save(viagem);
     }

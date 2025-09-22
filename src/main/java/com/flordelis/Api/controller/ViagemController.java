@@ -79,7 +79,7 @@ public class ViagemController {
 
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ViagemModel> finalizar(@PathVariable Long id, @RequestBody FinalizarViagemDTO dto){
+    public ResponseEntity<ViagemModel> finalizar(@PathVariable Long id, @Valid @RequestBody FinalizarViagemDTO dto){
         log.info("PATCH /viagem/{} -> finalizando viagem", id);
         ViagemModel viagemFinalizada = viagemService.finalizar(id, dto);
         log.debug("PATCH /viagem/{} -> detalhes da viagem finalizada: {}",id, viagemFinalizada);

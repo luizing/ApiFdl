@@ -1,10 +1,9 @@
 package com.flordelis.Api.model;
 
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -14,6 +13,10 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ItemVenda {
+    @NotNull(message = "A quantidade é obrigatória")
+    @Positive(message = "A quantidade deve ser maior que zero")
     private int quantidade;
+    @NotNull(message = "O valor é obrigatória")
+    @Positive(message = "O valor deve ser maior que zero")
     private BigDecimal valor;
 }

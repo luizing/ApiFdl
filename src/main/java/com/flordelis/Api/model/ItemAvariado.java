@@ -1,11 +1,9 @@
 package com.flordelis.Api.model;
 
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import lombok.*;
 
 @Embeddable
 @Getter
@@ -14,5 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ItemAvariado {
     private Avarias tipo;
+    @NotNull(message = "A quantidade é obrigatória")
+    @Positive(message = "A quantidade deve ser maior que zero")
     private int quantidade;
 }
