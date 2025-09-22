@@ -1,8 +1,8 @@
-package com.flordelis.Api.controller;
-import com.flordelis.Api.dto.CriarViagemDTO;
-import com.flordelis.Api.dto.FinalizarViagemDTO;
-import com.flordelis.Api.model.ViagemModel;
-import com.flordelis.Api.service.ViagemService;
+package com.flordelis.Api.viagem.web.controller;
+import com.flordelis.Api.viagem.application.dto.CriarViagemDTO;
+import com.flordelis.Api.viagem.application.dto.FinalizarViagemDTO;
+import com.flordelis.Api.viagem.domain.model.ViagemModel;
+import com.flordelis.Api.viagem.domain.service.ViagemService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

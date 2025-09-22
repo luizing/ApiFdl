@@ -1,6 +1,6 @@
-package com.flordelis.Api.dto;
+package com.flordelis.Api.viagem.application.dto;
 
-import com.flordelis.Api.model.ViagemModel;
+import com.flordelis.Api.viagem.domain.model.ViagemModel;
 import lombok.Getter;
 
 import java.time.LocalDate;

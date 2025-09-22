@@ -1,10 +1,10 @@
-package com.flordelis.Api.service;
+package com.flordelis.Api.viagem.domain.service;
 
-import com.flordelis.Api.dto.FinalizarViagemDTO;
-import com.flordelis.Api.exception.ViagemAlreadyFinishedException;
-import com.flordelis.Api.exception.ViagemNotFoundException;
-import com.flordelis.Api.model.ViagemModel;
-import com.flordelis.Api.repository.ViagemRepository;
+import com.flordelis.Api.viagem.application.dto.FinalizarViagemDTO;
+import com.flordelis.Api.viagem.application.exception.ViagemAlreadyFinishedException;
+import com.flordelis.Api.viagem.application.exception.ViagemNotFoundException;
+import com.flordelis.Api.viagem.domain.model.ViagemModel;
+import com.flordelis.Api.viagem.infrastructure.repository.ViagemRepositoryJPA;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +14,9 @@ import java.util.List;
 @Service
 public class ViagemService {
 
-    private final ViagemRepository viagemRepository;
+    private final ViagemRepositoryJPA viagemRepository;
 
-    public ViagemService(ViagemRepository viagemRepository){
+    public ViagemService(ViagemRepositoryJPA viagemRepository){
         this.viagemRepository = viagemRepository;
     }
 

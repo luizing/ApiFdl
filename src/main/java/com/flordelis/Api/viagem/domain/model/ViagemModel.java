@@ -1,6 +1,6 @@
-package com.flordelis.Api.model;
+package com.flordelis.Api.viagem.domain.model;
 
-import com.flordelis.Api.dto.FinalizarViagemDTO;
+import com.flordelis.Api.viagem.application.dto.FinalizarViagemDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

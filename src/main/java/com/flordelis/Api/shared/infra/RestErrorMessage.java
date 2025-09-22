@@ -1,4 +1,4 @@
-package com.flordelis.Api.infra;
+package com.flordelis.Api.shared.infra;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

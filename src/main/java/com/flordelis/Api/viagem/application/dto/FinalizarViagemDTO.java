@@ -1,7 +1,7 @@
-package com.flordelis.Api.dto;
+package com.flordelis.Api.viagem.application.dto;
 
-import com.flordelis.Api.model.ItemAvariado;
-import com.flordelis.Api.model.ItemVenda;
+import com.flordelis.Api.viagem.domain.model.ItemAvariado;
+import com.flordelis.Api.viagem.domain.model.ItemVenda;
 import lombok.Getter;
 
 import java.util.List;

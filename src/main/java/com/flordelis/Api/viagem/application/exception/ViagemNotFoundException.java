@@ -1,4 +1,4 @@
-package com.flordelis.Api.exception;
+package com.flordelis.Api.viagem.application.exception;
 
 public class ViagemNotFoundException extends RuntimeException{
 

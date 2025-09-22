@@ -1,4 +1,4 @@
-package com.flordelis.Api.model;
+package com.flordelis.Api.viagem.domain.model;
 
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;

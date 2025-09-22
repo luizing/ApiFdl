@@ -1,7 +1,7 @@
-package com.flordelis.Api.infra;
+package com.flordelis.Api.shared.infra;
 
-import com.flordelis.Api.exception.ViagemAlreadyFinishedException;
-import com.flordelis.Api.exception.ViagemNotFoundException;
+import com.flordelis.Api.viagem.application.exception.ViagemAlreadyFinishedException;
+import com.flordelis.Api.viagem.application.exception.ViagemNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
