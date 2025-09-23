@@ -4,6 +4,7 @@ import com.flordelis.Api.viagem.application.dto.FinalizarViagemDTO;
 import com.flordelis.Api.viagem.application.exception.ViagemAlreadyFinishedException;
 import com.flordelis.Api.viagem.application.exception.ViagemNotFoundException;
 import com.flordelis.Api.viagem.domain.model.ViagemModel;
+import com.flordelis.Api.viagem.domain.repository.ViagemRepository;
 import com.flordelis.Api.viagem.infrastructure.repository.ViagemRepositoryJPA;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import java.util.List;
 @Service
 public class ViagemService {
 
-    private final ViagemRepositoryJPA viagemRepository;
+    private final ViagemRepository viagemRepository;
 
     public ViagemService(ViagemRepositoryJPA viagemRepository){
         this.viagemRepository = viagemRepository;
@@ -54,5 +55,5 @@ public class ViagemService {
     public void delete(Long id){
         ViagemModel viagem = viagemRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Viagem não encontrada com id " + id));
-        viagemRepository.delete(viagem);}
+        viagemRepository.deleteById(id);}
 }
