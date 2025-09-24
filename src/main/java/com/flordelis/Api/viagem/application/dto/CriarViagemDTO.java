@@ -10,15 +10,17 @@ public class CriarViagemDTO {
     private LocalDate data;
     private String rota;
     private int carga;
+    private long veiculoId;
 
     public ViagemModel converter(){
-        return new ViagemModel(data, rota, carga);
+        return new ViagemModel(data, rota, carga, veiculoId);
     }
 
     @Override
     public String toString(){
         return "{data -> " + data +
                 "; rota -> " + rota +
-                "; carga -> " + carga + "}";
+                "; carga -> " + carga +
+                "; veiculoId -> " + veiculoId + "}";
     }
 }

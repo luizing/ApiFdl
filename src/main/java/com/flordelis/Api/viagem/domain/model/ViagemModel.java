@@ -4,6 +4,7 @@ import com.flordelis.Api.viagem.application.dto.FinalizarViagemDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
@@ -29,7 +30,7 @@ public class ViagemModel {
     private String rota;
     @NotNull(message = "A carga não pode ser nula")
     private int carga;
-    @NotNull(message = "O veiculo não pode ser nulo")
+    @Positive(message = "O id do veiculo deve ser positivo")
     private long veiculoId;
 
     /*@ElementCollection
@@ -54,10 +55,11 @@ public class ViagemModel {
     private int kms;
 
     // Contrutor de criação de viagem
-    public ViagemModel(LocalDate data, String rota, int carga){
+    public ViagemModel(LocalDate data, String rota, int carga, long veiculoId){
         this.data = data;
         this.rota = rota;
         this.carga = carga;
+        this.veiculoId = veiculoId;
     }
 
     public void finalizar(FinalizarViagemDTO dto){
