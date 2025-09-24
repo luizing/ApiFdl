@@ -1,6 +1,7 @@
 package com.flordelis.Api.viagem.domain.model;
 
 import com.flordelis.Api.viagem.application.dto.FinalizarViagemDTO;
+import com.flordelis.Api.viagem.application.exception.RetornoBadQuantityException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -69,6 +70,18 @@ public class ViagemModel {
         this.setBonus(dto.getBonus());
         this.setKms(dto.getKms());
         this.setFinalizada(true);
+    }
+
+    public void validarCarga(FinalizarViagemDTO dto){
+        int totalVendido = dto.getPrecos().stream()
+                .mapToInt(ItemVenda::getQuantidade)
+                .sum();
+
+        int totalAvariados = dto.getAvariados().stream()
+                .mapToInt(ItemAvariado::getQuantidade)
+                .sum();
+
+        if ((totalVendido + totalAvariados + dto.getRetorno() + dto.getBonus()) != carga){throw new RetornoBadQuantityException();}
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.flordelis.Api.viagem.domain.service;
 
 import com.flordelis.Api.viagem.application.dto.FinalizarViagemDTO;
+import com.flordelis.Api.viagem.application.exception.RetornoBadQuantityException;
 import com.flordelis.Api.viagem.application.exception.ViagemAlreadyFinishedException;
 import com.flordelis.Api.viagem.application.exception.ViagemNotFoundException;
 import com.flordelis.Api.viagem.domain.model.ViagemModel;
@@ -44,9 +45,8 @@ public class ViagemService {
     public ViagemModel finalizar(Long id, FinalizarViagemDTO dto){
         ViagemModel viagem = viagemRepository.findById(id)
                 .orElseThrow(() -> new ViagemNotFoundException("Viagem não encontrada com id " + id));
-
         if (viagem.isFinalizada()) {throw new ViagemAlreadyFinishedException();}
-
+        viagem.validarCarga(dto);
         viagem.finalizar(dto);
         return viagemRepository.save(viagem);
     }

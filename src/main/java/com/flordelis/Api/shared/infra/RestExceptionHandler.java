@@ -1,5 +1,6 @@
 package com.flordelis.Api.shared.infra;
 
+import com.flordelis.Api.viagem.application.exception.RetornoBadQuantityException;
 import com.flordelis.Api.viagem.application.exception.ViagemAlreadyFinishedException;
 import com.flordelis.Api.viagem.application.exception.ViagemNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,11 @@ public class RestExceptionHandler{
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resposta);
     }
 
+    @ExceptionHandler(RetornoBadQuantityException.class)
+    public ResponseEntity<RestErrorMessage> RetornoBadQuantityHandle(RetornoBadQuantityException exception) {
+        RestErrorMessage resposta = new RestErrorMessage(HttpStatus.BAD_REQUEST,exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resposta);
+    }
 
     // Captura qualquer exceção não tratada
     @ExceptionHandler(Exception.class)
