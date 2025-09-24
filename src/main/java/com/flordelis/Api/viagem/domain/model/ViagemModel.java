@@ -29,13 +29,14 @@ public class ViagemModel {
     private String rota;
     @NotNull(message = "A carga não pode ser nula")
     private int carga;
-
-    /*
-            Campos a serem adicionados após modelagem das outras classes.
     @NotNull(message = "O veiculo não pode ser nulo")
-    private Veiculo veiculo;
+    private long veiculoId;
+
+    /*@ElementCollection
+    @CollectionTable(name = "viagem_funcionarios",
+            joinColumns = @JoinColumn(name = "viagem_id"))
     @NotBlank(message = "A lista de funcionários não pode ser nula")
-    private List<FuncionarioModel> funcionarios;
+    private List<Long> funcionariosId;
     */
 
     private boolean finalizada = false;
@@ -74,9 +75,13 @@ public class ViagemModel {
                 "; data -> " + data +
                 "; rota -> " + rota +
                 "; carga -> " + carga +
+                "; veiculoId -> " + veiculoId +
                 "; finalizada -> " + finalizada +
                 "; valor -> " + precos +
                 "; avariados -> " + avariados +
+                "; retorno -> " + retorno +
+                "; bonus -> " + bonus +
+                "; kms -> " + kms +
                 "}";
     }
 
