@@ -94,6 +94,62 @@
 			"response": []
 		},
 		{
+			"name": "viagem/id notFound",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 404\", function () {",
+							"    pm.expect(pm.response.code).to.equal(404);",
+							"});",
+							"",
+							"pm.test(\"Response body matches exact not found message\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.eql({",
+							"        \"status\": \"NOT_FOUND\",",
+							"        \"message\": \"Viagem não encontrada\"",
+							"    });",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/viagem/{{idHIGH}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"viagem",
+						"{{idHIGH}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "viagem/",
 			"event": [
 				{
@@ -287,26 +343,69 @@
 						}
 					],
 					"body": ""
+				},
+				{
+					"name": "erro",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"rota\": \"{{rota}}\",\r\n    \"data\": \"{{data}}\",\r\n    \"carga\": {{carga}}\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/viagem",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"viagem"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
 				}
 			]
 		},
 		{
-			"name": "viagem/id notFound",
+			"name": "viagem/data OK",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code 404\", function () {",
-							"    pm.expect(pm.response.code).to.equal(404);",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
 							"});",
 							"",
+							"pm.test(\"Response is valid JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
 							"",
-							"",
-							"pm.test(\"Response body is empty or contains not found message\", function () {",
-							"    var body = pm.response.text();",
-							"    pm.expect(body === \"\" || body.toLowerCase().includes(\"not found\") || body.toLowerCase().includes(\"nao encontrado\")).to.be.true;",
+							"pm.test(\"Response contains expected fields in each object\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.be.an('array');",
+							"    jsonData.forEach(item => {",
+							"        pm.expect(item).to.have.property(\"id\");",
+							"        pm.expect(item).to.have.property(\"rota\");",
+							"        pm.expect(item).to.have.property(\"data\");",
+							"        pm.expect(item).to.have.property(\"carga\");",
+							"        pm.expect(item).to.have.property(\"valor\");",
+							"        pm.expect(item).to.have.property(\"avariados\");",
 							"    });",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
 							""
 						],
 						"type": "text/javascript",
@@ -333,13 +432,281 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseURL}}/viagem/1111",
+					"raw": "{{baseURL}}/viagem/data/{{dataTest}}",
 					"host": [
 						"{{baseURL}}"
 					],
 					"path": [
 						"viagem",
-						"1111"
+						"data",
+						"{{dataTest}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "viagem/id OK",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is valid JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Response contains expected fields\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property(\"id\");",
+							"    pm.expect(jsonData).to.have.property(\"rota\");",
+							"    pm.expect(jsonData).to.have.property(\"data\");",
+							"    pm.expect(jsonData).to.have.property(\"carga\");",
+							"    pm.expect(jsonData).to.have.property(\"valor\");",
+							"    pm.expect(jsonData).to.have.property(\"avariados\");",
+							"});",
+							"",
+							"pm.test(\"Fields are not null\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData.id).to.not.be.null;",
+							"    pm.expect(jsonData.rota).to.not.be.null;",
+							"    pm.expect(jsonData.data).to.not.be.null;",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/viagem/{{idTest}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"viagem",
+						"{{idTest}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "viagem/ Ok",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var schema = {",
+							"  \"$schema\": \"http://json-schema.org/draft-04/schema#\",",
+							"  \"type\": \"array\",",
+							"  \"items\": {",
+							"    \"type\": \"object\",",
+							"    \"properties\": {",
+							"      \"id\": { \"type\": \"integer\" },",
+							"      \"data\": { \"type\": \"string\" },",
+							"      \"rota\": { \"type\": \"string\" },",
+							"      \"carga\": { \"type\": \"integer\" },",
+							"      \"valor\": { \"type\": \"number\" },",
+							"      \"avariados\": { \"type\": \"integer\" }",
+							"    },",
+							"    \"required\": [\"id\", \"data\", \"rota\", \"carga\", \"valor\", \"avariados\"]",
+							"  }",
+							"};",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Retorna Lista de Viagem",
+							"pm.test('Estrutura do body', function(){",
+							"    pm.expect(tv4.validate(jsonData, schema)).to.be.true;",
+							"});",
+							"",
+							"// Itens Nao nulos estao preenchidos",
+							"pm.test(\"Itens nao nulos\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    jsonData.forEach(function(item) {",
+							"        pm.expect(item.id).to.not.be.null;",
+							"        pm.expect(item.data).to.not.be.null;",
+							"        pm.expect(item.rota).to.not.be.null;",
+							"    });",
+							"});",
+							"",
+							"// Testa se a resposta é uma lista vazia",
+							"pm.test(\"Resposta é lista vazia\", function () {",
+							"    pm.expect(Array.isArray(jsonData) && jsonData.length === 0).to.be.true;",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/viagem",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"viagem"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Finalizar viagem/1 ok",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response has expected properties\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('id');",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData).to.have.property('rota');",
+							"    pm.expect(jsonData).to.have.property('carga');",
+							"    pm.expect(jsonData).to.have.property('finalizada');",
+							"    pm.expect(jsonData).to.have.property('valor');",
+							"    pm.expect(jsonData).to.have.property('avariados');",
+							"});",
+							"",
+							"pm.test(\"Response 'valor' and 'avariados' match request body\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    var requestBody = JSON.parse(pm.request.body.raw);",
+							"    pm.expect(jsonData.valor).to.eql(requestBody.valor);",
+							"    pm.expect(jsonData.avariados).to.eql(requestBody.avariados);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"precos\": [\r\n    { \"quantidade\": 200, \"valor\": 4 },\r\n    { \"quantidade\": 260, \"valor\": 3.50 }\r\n  ],\r\n  \"avariados\": [\r\n    { \"quantidade\": 5, \"tipo\": \"Quebrado\" },\r\n    { \"quantidade\": 5, \"tipo\": \"Vazado\" }\r\n  ],\r\n  \"kms\": 180,\r\n  \"bonus\": 10,\r\n  \"retorno\": 20\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/viagem/1",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"viagem",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "viagem/finalizada",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/viagem/finalizadas",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"viagem",
+						"finalizadas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "viagem/abertas",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "delete not found",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/viagem/1",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"viagem",
+						"1"
 					]
 				}
 			},

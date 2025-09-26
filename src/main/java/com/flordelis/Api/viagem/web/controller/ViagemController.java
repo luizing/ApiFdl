@@ -17,7 +17,6 @@ import java.time.LocalDate;
 @Slf4j
 public class ViagemController {
 
-
     private final ViagemService viagemService;
 
     public ViagemController(ViagemService viagemService){

@@ -1,8 +1,8 @@
-rota,data,carga
-Pacajus,2025-09-11,500
-Horizonte,2025-09-11,920
-Horizonte,2025-09-12,920
-Horizonte,2025-09-13,920
-Pacajus,2025-09-13,500
-Pacajus,2025-09-13,600
-Serra-Felix,2025-09-13,750
+rota,data,carga,veiculoId
+Pacajus,2025-09-11,500,1
+Horizonte,2025-09-11,920,2
+Horizonte,2025-09-12,920,2
+Horizonte,2025-09-13,920,2
+Pacajus,2025-09-13,500,1
+Pacajus,2025-09-13,600,3
+Serra-Felix,2025-09-13,750,3

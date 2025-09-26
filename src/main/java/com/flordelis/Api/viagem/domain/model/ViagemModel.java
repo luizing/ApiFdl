@@ -21,7 +21,6 @@ import java.util.List;
 @Table(name = "tb_viagens")
 public class ViagemModel {
 
-    // Atributos de criação da viagem
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,21 +28,13 @@ public class ViagemModel {
     private LocalDate data;
     @NotBlank(message = "A rota não pode estar vazia")
     private String rota;
-    @NotNull(message = "A carga não pode ser nula")
+    @PositiveOrZero(message = "A carga não pode ser negativa")
     private int carga;
     @Positive(message = "O id do veiculo deve ser positivo")
     private long veiculoId;
 
-    /*@ElementCollection
-    @CollectionTable(name = "viagem_funcionarios",
-            joinColumns = @JoinColumn(name = "viagem_id"))
-    @NotBlank(message = "A lista de funcionários não pode ser nula")
-    private List<Long> funcionariosId;
-    */
+    private boolean finalizada;
 
-    private boolean finalizada = false;
-
-    // Atributos de finalização de viagem
     @ElementCollection
     private List<ItemVenda> precos = new ArrayList<>();
     @ElementCollection
@@ -55,15 +46,16 @@ public class ViagemModel {
     @PositiveOrZero(message = "Os quilômetros não podem ser negativos")
     private int kms;
 
-    // Contrutor de criação de viagem
     public ViagemModel(LocalDate data, String rota, int carga, long veiculoId){
         this.data = data;
         this.rota = rota;
         this.carga = carga;
         this.veiculoId = veiculoId;
+        this.finalizada = false;
     }
 
     public void finalizar(FinalizarViagemDTO dto){
+        this.validarCarga(dto);
         this.setPrecos(dto.getPrecos());
         this.setAvariados(dto.getAvariados());
         this.setRetorno(dto.getRetorno());
