@@ -60,8 +60,8 @@ public class ViagemModel {
     }
 
     public void finalizar(FinalizarViagemDTO dto){
-        this.validarCarga(dto);
-        this.validarValor(dto);
+        if(!this.validarCarga(dto,this.carga)){throw new RetornoBadQuantityException();}
+        this.setValorFinal(calcValorFinal(dto));
         this.setPrecos(dto.getPrecos());
         this.setAvariados(dto.getAvariados());
         this.setRetorno(dto.getRetorno());
@@ -72,19 +72,19 @@ public class ViagemModel {
         this.setFinalizada(true);
     }
 
-    public void validarCarga(FinalizarViagemDTO dto){
-        int totalVendido = dto.getPrecos().stream()
+    public boolean validarCarga(FinalizarViagemDTO dto, int carga){
+        int qtdVendida = dto.getPrecos().stream()
                 .mapToInt(ItemVenda::getQuantidade)
                 .sum();
 
-        int totalAvariados = dto.getAvariados().stream()
+        int qtdAvariada = dto.getAvariados().stream()
                 .mapToInt(ItemAvariado::getQuantidade)
                 .sum();
 
-        if ((totalVendido + totalAvariados + dto.getRetorno() + dto.getBonus()) != carga){throw new RetornoBadQuantityException();}
+        return (qtdAvariada + qtdVendida + dto.getRetorno() + dto.getBonus()) == carga;
     }
 
-    public void validarValor(FinalizarViagemDTO dto){
+    public BigDecimal calcValorFinal(FinalizarViagemDTO dto){
         BigDecimal totalDespesas = dto.getDespesas().stream()
                 .map(Despesa::getValor)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -93,7 +93,7 @@ public class ViagemModel {
                 .map(item -> item.getValor().multiply(BigDecimal.valueOf(item.getQuantidade())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        if (totalVendas.subtract(totalDespesas).compareTo(dto.getValorFinal()) != 0){throw new ValorBadReturnException();}
+        return  (totalVendas.subtract(totalDespesas));
     }
 
     @Override
@@ -110,6 +110,7 @@ public class ViagemModel {
                 "; bonus -> " + bonus +
                 "; kms -> " + kms +
                 "; despesas -> " + despesas +
+                "; valorFinal -> " + valorFinal +
                 "}";
     }
 
