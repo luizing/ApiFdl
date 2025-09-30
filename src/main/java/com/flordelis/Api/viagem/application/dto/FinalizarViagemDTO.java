@@ -15,4 +15,15 @@ public class FinalizarViagemDTO {
     private int retorno;
     private int bonus;
     private int kms;
+
+    @Override
+    public String toString(){
+        return "{precos -> " + precos +
+                "; avariados -> " + avariados +
+                "; despesas -> " + despesas +
+                "; retorno -> " + retorno +
+                "; bonus -> " + bonus +
+                "; kms -> " + kms +
+                "}";
+    }
 }
