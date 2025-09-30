@@ -45,6 +45,8 @@ public class ViagemModel {
     private int bonus;
     @PositiveOrZero(message = "Os quilômetros não podem ser negativos")
     private int kms;
+    @ElementCollection
+    private List<Despesa> despesas = new ArrayList<>();
 
     public ViagemModel(LocalDate data, String rota, int carga, long veiculoId){
         this.data = data;
@@ -61,6 +63,7 @@ public class ViagemModel {
         this.setRetorno(dto.getRetorno());
         this.setBonus(dto.getBonus());
         this.setKms(dto.getKms());
+        this.setDespesas(dto.getDespesas());
         this.setFinalizada(true);
     }
 
@@ -89,6 +92,7 @@ public class ViagemModel {
                 "; retorno -> " + retorno +
                 "; bonus -> " + bonus +
                 "; kms -> " + kms +
+                "; despesas -> " + despesas +
                 "}";
     }
 
