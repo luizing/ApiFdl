@@ -5,6 +5,7 @@ import com.flordelis.Api.viagem.domain.model.ItemAvariado;
 import com.flordelis.Api.viagem.domain.model.ItemVenda;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -15,6 +16,7 @@ public class FinalizarViagemDTO {
     private int retorno;
     private int bonus;
     private int kms;
+    private BigDecimal valorFinal;
 
     @Override
     public String toString(){
@@ -24,6 +26,7 @@ public class FinalizarViagemDTO {
                 "; retorno -> " + retorno +
                 "; bonus -> " + bonus +
                 "; kms -> " + kms +
+                "; valorFinal -> " + valorFinal +
                 "}";
     }
 }

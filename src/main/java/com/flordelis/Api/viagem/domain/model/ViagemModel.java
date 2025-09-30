@@ -2,6 +2,7 @@ package com.flordelis.Api.viagem.domain.model;
 
 import com.flordelis.Api.viagem.application.dto.FinalizarViagemDTO;
 import com.flordelis.Api.viagem.application.exception.RetornoBadQuantityException;
+import com.flordelis.Api.viagem.application.exception.ValorBadReturnException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,7 @@ public class ViagemModel {
     private int kms;
     @ElementCollection
     private List<Despesa> despesas = new ArrayList<>();
+    private BigDecimal valorFinal;
 
     public ViagemModel(LocalDate data, String rota, int carga, long veiculoId){
         this.data = data;
@@ -58,12 +61,14 @@ public class ViagemModel {
 
     public void finalizar(FinalizarViagemDTO dto){
         this.validarCarga(dto);
+        this.validarValor(dto);
         this.setPrecos(dto.getPrecos());
         this.setAvariados(dto.getAvariados());
         this.setRetorno(dto.getRetorno());
         this.setBonus(dto.getBonus());
         this.setKms(dto.getKms());
         this.setDespesas(dto.getDespesas());
+        this.setValorFinal(dto.getValorFinal());
         this.setFinalizada(true);
     }
 
@@ -77,6 +82,18 @@ public class ViagemModel {
                 .sum();
 
         if ((totalVendido + totalAvariados + dto.getRetorno() + dto.getBonus()) != carga){throw new RetornoBadQuantityException();}
+    }
+
+    public void validarValor(FinalizarViagemDTO dto){
+        BigDecimal totalDespesas = dto.getDespesas().stream()
+                .map(Despesa::getValor)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal totalVendas = dto.getPrecos().stream()
+                .map(item -> item.getValor().multiply(BigDecimal.valueOf(item.getQuantidade())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        if (totalVendas.subtract(totalDespesas).compareTo(dto.getValorFinal()) != 0){throw new ValorBadReturnException();}
     }
 
     @Override
