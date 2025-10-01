@@ -68,7 +68,7 @@ public class ViagemModel {
         this.setBonus(dto.getBonus());
         this.setKms(dto.getKms());
         this.setDespesas(dto.getDespesas());
-        this.setValorFinal(dto.getValorFinal());
+        this.setValorFinal(this.getValorFinal());
         this.setFinalizada(true);
     }
 
