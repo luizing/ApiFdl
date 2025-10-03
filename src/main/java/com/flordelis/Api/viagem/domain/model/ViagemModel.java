@@ -1,8 +1,5 @@
 package com.flordelis.Api.viagem.domain.model;
 
-import com.flordelis.Api.viagem.application.dto.FinalizarViagemDTO;
-import com.flordelis.Api.viagem.application.exception.RetornoBadQuantityException;
-import com.flordelis.Api.viagem.application.exception.ValorBadReturnException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -59,41 +56,25 @@ public class ViagemModel {
         this.finalizada = false;
     }
 
-    public void finalizar(FinalizarViagemDTO dto){
-        if(!this.validarCarga(dto,this.carga)){throw new RetornoBadQuantityException();}
-        this.setValorFinal(calcValorFinal(dto));
-        this.setPrecos(dto.precos());
-        this.setAvariados(dto.avariados());
-        this.setRetorno(dto.retorno());
-        this.setBonus(dto.bonus());
-        this.setKms(dto.kms());
-        this.setDespesas(dto.despesas());
+    public void finalizar(
+            List<ItemVenda> precos,
+            List<ItemAvariado> avariados,
+            List<Despesa> despesas,
+            int retorno,
+            int bonus,
+            int kms,
+            BigDecimal valorFinal
+    ){
+        this.setValorFinal(valorFinal);
+        this.setPrecos(precos);
+        this.setAvariados(avariados);
+        this.setRetorno(retorno);
+        this.setBonus(bonus);
+        this.setKms(kms);
+        this.setDespesas(despesas);
         this.setFinalizada(true);
     }
 
-    public boolean validarCarga(FinalizarViagemDTO dto, int carga){
-        int qtdVendida = dto.precos().stream()
-                .mapToInt(ItemVenda::getQuantidade)
-                .sum();
-
-        int qtdAvariada = dto.avariados().stream()
-                .mapToInt(ItemAvariado::getQuantidade)
-                .sum();
-
-        return (qtdAvariada + qtdVendida + dto.retorno() + dto.bonus()) == carga;
-    }
-
-    public BigDecimal calcValorFinal(FinalizarViagemDTO dto){
-        BigDecimal totalDespesas = dto.despesas().stream()
-                .map(Despesa::getValor)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        BigDecimal totalVendas = dto.precos().stream()
-                .map(item -> item.getValor().multiply(BigDecimal.valueOf(item.getQuantidade())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        return  (totalVendas.subtract(totalDespesas));
-    }
 
     @Override
     public String toString(){

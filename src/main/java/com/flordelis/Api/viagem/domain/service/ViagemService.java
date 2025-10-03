@@ -39,7 +39,16 @@ public class ViagemService {
         ViagemModel viagem = viagemRepository.findById(id)
                 .orElseThrow(() -> new ViagemNotFoundException("Viagem não encontrada com id " + id));
         if (viagem.isFinalizada()) {throw new ViagemAlreadyFinishedException();}
-        viagem.finalizar(dto);
+        if (dto.calcularQtdAvariada() + dto.calcularQtdVendida() != viagem.getCarga()){throw new RetornoBadQuantityException();}
+        viagem.finalizar(
+                dto.precos(),
+                dto.avariados(),
+                dto.despesas(),
+                dto.retorno(),
+                dto.bonus(),
+                dto.kms(),
+                dto.calcularValorFinal()
+        );
         return viagemRepository.save(viagem);
     }
 
@@ -48,3 +57,4 @@ public class ViagemService {
                 .orElseThrow(() -> new ViagemNotFoundException("Viagem não encontrada com id " + id));
         viagemRepository.deleteById(id);}
 }
+
