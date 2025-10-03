@@ -9,6 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.validation.FieldError;
+
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class RestExceptionHandler{
@@ -22,6 +26,23 @@ public class RestExceptionHandler{
     @ExceptionHandler(ViagemAlreadyFinishedException.class)
     private ResponseEntity<RestErrorMessage> ViagemAlreadyFinishedHandler(ViagemAlreadyFinishedException exception){
         RestErrorMessage resposta = new RestErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resposta);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<RestErrorMessage> handleValidationExceptions(MethodArgumentNotValidException exception) {
+        String errorMessage = exception.getBindingResult().getAllErrors().stream()
+                .map(error -> {
+                    String fieldName = (error instanceof FieldError) ? ((FieldError) error).getField() : error.getObjectName();
+                    String defaultMessage = error.getDefaultMessage();
+                    return String.format("%s: %s", fieldName, defaultMessage);
+                })
+                .collect(Collectors.joining("; "));
+
+        RestErrorMessage resposta = new RestErrorMessage(
+                HttpStatus.BAD_REQUEST,
+                "Erros de validação nos campos: " + errorMessage
+        );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resposta);
     }
 
