@@ -18,7 +18,7 @@ public class ViagemService {
 
     private final ViagemRepository viagemRepository;
 
-    public ViagemService(ViagemRepositoryJPA viagemRepository){
+    public ViagemService(ViagemRepository viagemRepository){
         this.viagemRepository = viagemRepository;
     }
 
