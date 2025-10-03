@@ -62,34 +62,34 @@ public class ViagemModel {
     public void finalizar(FinalizarViagemDTO dto){
         if(!this.validarCarga(dto,this.carga)){throw new RetornoBadQuantityException();}
         this.setValorFinal(calcValorFinal(dto));
-        this.setPrecos(dto.getPrecos());
-        this.setAvariados(dto.getAvariados());
-        this.setRetorno(dto.getRetorno());
-        this.setBonus(dto.getBonus());
-        this.setKms(dto.getKms());
-        this.setDespesas(dto.getDespesas());
+        this.setPrecos(dto.precos());
+        this.setAvariados(dto.avariados());
+        this.setRetorno(dto.retorno());
+        this.setBonus(dto.bonus());
+        this.setKms(dto.kms());
+        this.setDespesas(dto.despesas());
         this.setValorFinal(this.getValorFinal());
         this.setFinalizada(true);
     }
 
     public boolean validarCarga(FinalizarViagemDTO dto, int carga){
-        int qtdVendida = dto.getPrecos().stream()
+        int qtdVendida = dto.precos().stream()
                 .mapToInt(ItemVenda::getQuantidade)
                 .sum();
 
-        int qtdAvariada = dto.getAvariados().stream()
+        int qtdAvariada = dto.avariados().stream()
                 .mapToInt(ItemAvariado::getQuantidade)
                 .sum();
 
-        return (qtdAvariada + qtdVendida + dto.getRetorno() + dto.getBonus()) == carga;
+        return (qtdAvariada + qtdVendida + dto.retorno() + dto.bonus()) == carga;
     }
 
     public BigDecimal calcValorFinal(FinalizarViagemDTO dto){
-        BigDecimal totalDespesas = dto.getDespesas().stream()
+        BigDecimal totalDespesas = dto.despesas().stream()
                 .map(Despesa::getValor)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        BigDecimal totalVendas = dto.getPrecos().stream()
+        BigDecimal totalVendas = dto.precos().stream()
                 .map(item -> item.getValor().multiply(BigDecimal.valueOf(item.getQuantidade())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 

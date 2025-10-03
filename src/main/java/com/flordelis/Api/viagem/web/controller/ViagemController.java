@@ -71,7 +71,7 @@ public class ViagemController {
     @PostMapping
     public ResponseEntity<ViagemModel> create(@Valid @RequestBody CriarViagemDTO dto) {
         log.info("POST /viagem -> criando viagem com dados: {}", dto);
-        ViagemModel novaViagem = viagemService.create(dto.converter());
+        ViagemModel novaViagem = viagemService.create(dto.toEntity());
         log.debug("POST /viagem -> detalhes da viagem criada: {}", novaViagem);
         log.info("POST /viagem -> viagem criada com id: {}", novaViagem.getId());
         return new ResponseEntity<>(novaViagem,HttpStatus.CREATED);}
