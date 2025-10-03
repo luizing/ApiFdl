@@ -13,8 +13,7 @@ public record FinalizarViagemDTO (
     List<Despesa> despesas,
     int retorno,
     int bonus,
-    int kms,
-    BigDecimal valorFinal
+    int kms
 ){
     public BigDecimal calcularValorFinal(){
         BigDecimal totalDespesas = this.despesas().stream()
