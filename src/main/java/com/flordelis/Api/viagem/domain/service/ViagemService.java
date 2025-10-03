@@ -39,7 +39,7 @@ public class ViagemService {
         ViagemModel viagem = viagemRepository.findById(id)
                 .orElseThrow(() -> new ViagemNotFoundException("Viagem não encontrada com id " + id));
         if (viagem.isFinalizada()) {throw new ViagemAlreadyFinishedException();}
-        if (dto.calcularQtdAvariada() + dto.calcularQtdVendida() != viagem.getCarga()){throw new RetornoBadQuantityException();}
+        if (dto.calcularQtdAvariada() + dto.calcularQtdVendida() + dto.retorno() + dto.bonus() != viagem.getCarga()){throw new RetornoBadQuantityException();}
         viagem.finalizar(
                 dto.precos(),
                 dto.avariados(),
