@@ -2,7 +2,6 @@ package com.flordelis.Api.viagem.domain.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
@@ -22,8 +21,8 @@ public class ViagemModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull(message = "A data não pode ser nula")
-    private LocalDate data;
+    @NotBlank(message = "A data de saída não pode ser vazia")
+    private LocalDate dataSaida;
     @NotBlank(message = "A rota não pode estar vazia")
     private String rota;
     @PositiveOrZero(message = "A carga não pode ser negativa")
@@ -34,21 +33,21 @@ public class ViagemModel {
     private boolean finalizada;
 
     @ElementCollection
-    private List<ItemVenda> precos = new ArrayList<>();
+    private List<ItemVenda> itensVendidos = new ArrayList<>();
     @ElementCollection
-    private List<ItemAvariado> avariados = new ArrayList<>();
+    private List<ItemAvariado> itensAvariados = new ArrayList<>();
     @PositiveOrZero(message = "O retorno não pode ser negativo")
-    private int retorno;
+    private int itensRetorno;
     @PositiveOrZero(message = "O bônus não pode ser negativo")
-    private int bonus;
+    private int itensBonificacao;
     @PositiveOrZero(message = "Os quilômetros não podem ser negativos")
-    private int kms;
+    private int quilometragem;
     @ElementCollection
     private List<Despesa> despesas = new ArrayList<>();
     private BigDecimal valorFinal;
 
-    public ViagemModel(LocalDate data, String rota, int carga, long veiculoId){
-        this.data = data;
+    public ViagemModel(LocalDate dataSaida, String rota, int carga, long veiculoId){
+        this.dataSaida = dataSaida;
         this.rota = rota;
         this.carga = carga;
         this.veiculoId = veiculoId;
@@ -56,20 +55,20 @@ public class ViagemModel {
     }
 
     public void finalizar(
-            List<ItemVenda> precos,
-            List<ItemAvariado> avariados,
+            List<ItemVenda> itensVendidos,
+            List<ItemAvariado> itensAvariados,
             List<Despesa> despesas,
-            int retorno,
-            int bonus,
-            int kms,
+            int itensRetorno,
+            int itensBonificacao,
+            int quilometragem,
             BigDecimal valorFinal
     ){
         this.valorFinal = valorFinal;
-        this.precos = precos;
-        this.avariados = avariados;
-        this.retorno = retorno;
-        this.bonus = bonus;
-        this.kms = kms;
+        this.itensVendidos = itensVendidos;
+        this.itensAvariados = itensAvariados;
+        this.itensRetorno = itensRetorno;
+        this.itensBonificacao = itensBonificacao;
+        this.quilometragem = quilometragem;
         this.despesas = despesas;
         this.finalizada = true;
     }
@@ -78,18 +77,18 @@ public class ViagemModel {
     @Override
     public String toString(){
         return "{id -> " + id +
-                "; data -> " + data +
+                "; data -> " + dataSaida +
                 "; rota -> " + rota +
                 "; carga -> " + carga +
                 "; veiculoId -> " + veiculoId +
                 "; finalizada -> " + finalizada +
-                "; valor -> " + precos +
-                "; avariados -> " + avariados +
-                "; retorno -> " + retorno +
-                "; bonus -> " + bonus +
-                "; kms -> " + kms +
+                "; itens vendidos -> " + itensVendidos +
+                "; itens avariados -> " + itensAvariados +
+                "; itens retorno -> " + itensRetorno +
+                "; bonificação -> " + itensBonificacao +
+                "; quilometragem -> " + quilometragem +
                 "; despesas -> " + despesas +
-                "; valorFinal -> " + valorFinal +
+                "; valor final -> " + valorFinal +
                 "}";
     }
 
