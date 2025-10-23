@@ -15,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-@Setter
 @Entity
 @Table(name = "tb_viagens")
 public class ViagemModel {
@@ -65,14 +64,14 @@ public class ViagemModel {
             int kms,
             BigDecimal valorFinal
     ){
-        this.setValorFinal(valorFinal);
-        this.setPrecos(precos);
-        this.setAvariados(avariados);
-        this.setRetorno(retorno);
-        this.setBonus(bonus);
-        this.setKms(kms);
-        this.setDespesas(despesas);
-        this.setFinalizada(true);
+        this.valorFinal = valorFinal;
+        this.precos = precos;
+        this.avariados = avariados;
+        this.retorno = retorno;
+        this.bonus = bonus;
+        this.kms = kms;
+        this.despesas = despesas;
+        this.finalizada = true;
     }
 
 
