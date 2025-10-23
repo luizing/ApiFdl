@@ -2,25 +2,25 @@ package com.flordelis.Api.viagem.application.dto;
 
 import com.flordelis.Api.viagem.domain.model.Despesa;
 import com.flordelis.Api.viagem.domain.model.ItemAvariado;
-import com.flordelis.Api.viagem.domain.model.ItemVenda;
+import com.flordelis.Api.viagem.domain.model.ItemVendido;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-public record FinalizarViagemDTO (
-    List<ItemVenda> precos,
-    List<ItemAvariado> avariados,
+public record ViagemFinalizacaoRequest(
+    List<ItemVendido> itensVendidos,
+    List<ItemAvariado> itensAvariados,
     List<Despesa> despesas,
-    int retorno,
-    int bonus,
-    int kms
+    int itensRetorno,
+    int itensBonus,
+    int quilometragem
 ){
     public BigDecimal calcularValorFinal(){
         BigDecimal totalDespesas = this.despesas().stream()
                 .map(Despesa::getValor)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        BigDecimal totalVendas = this.precos().stream()
+        BigDecimal totalVendas = this.itensVendidos().stream()
                 .map(item -> item.getValor().multiply(BigDecimal.valueOf(item.getQuantidade())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
@@ -28,16 +28,15 @@ public record FinalizarViagemDTO (
     }
 
     public int calcularQtdVendida(){
-        return this.precos().stream()
-                .mapToInt(ItemVenda::getQuantidade)
+        return this.itensVendidos().stream()
+                .mapToInt(ItemVendido::getQuantidade)
                 .sum();
     }
 
     public int calcularQtdAvariada(){
-        return this.avariados().stream()
+        return this.itensAvariados().stream()
                 .mapToInt(ItemAvariado::getQuantidade)
                 .sum();
     }
-
 
 }

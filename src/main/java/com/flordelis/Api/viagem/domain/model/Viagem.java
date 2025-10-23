@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "tb_viagens")
-public class ViagemModel {
+public class Viagem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,7 @@ public class ViagemModel {
     private boolean finalizada;
 
     @ElementCollection
-    private List<ItemVenda> itensVendidos = new ArrayList<>();
+    private List<ItemVendido> itensVendidos = new ArrayList<>();
     @ElementCollection
     private List<ItemAvariado> itensAvariados = new ArrayList<>();
     @PositiveOrZero(message = "O retorno não pode ser negativo")
@@ -46,7 +46,7 @@ public class ViagemModel {
     private List<Despesa> despesas = new ArrayList<>();
     private BigDecimal valorFinal;
 
-    public ViagemModel(LocalDate dataSaida, String rota, int carga, long veiculoId){
+    public Viagem(LocalDate dataSaida, String rota, int carga, long veiculoId){
         this.dataSaida = dataSaida;
         this.rota = rota;
         this.carga = carga;
@@ -55,7 +55,7 @@ public class ViagemModel {
     }
 
     public void finalizar(
-            List<ItemVenda> itensVendidos,
+            List<ItemVendido> itensVendidos,
             List<ItemAvariado> itensAvariados,
             List<Despesa> despesas,
             int itensRetorno,
@@ -83,7 +83,7 @@ public class ViagemModel {
                 "; veiculoId -> " + veiculoId +
                 "; finalizada -> " + finalizada +
                 "; itens vendidos -> " + itensVendidos +
-                "; itens avariados -> " + itensAvariados +
+                "; itens itensAvariados -> " + itensAvariados +
                 "; itens retorno -> " + itensRetorno +
                 "; bonificação -> " + itensBonificacao +
                 "; quilometragem -> " + quilometragem +
