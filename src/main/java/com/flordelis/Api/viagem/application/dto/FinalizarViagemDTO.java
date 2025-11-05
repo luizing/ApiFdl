@@ -39,5 +39,8 @@ public record FinalizarViagemDTO (
                 .sum();
     }
 
+    public int calcularQtdTotalGarrafoes(){
+        return this.calcularQtdAvariada() + this.calcularQtdVendida() + this.retorno() + this.bonus();
+    }
 
 }
