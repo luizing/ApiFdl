@@ -14,8 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -78,6 +76,41 @@ class ViagemServiceTest {
         verify(viagemRepository, times(1)).findAll();
         verify(viagemRepository, never()).save(any());
     }
+
+    // Get by Id
+
+    @Test
+    @DisplayName("Viagem é retornada com sucesso quando encontrada")
+    void getByIdCase1() {
+        long id = 1L;
+        ViagemModel viagemExistente = createViagem();
+
+        when(viagemRepository.findById(id)).thenReturn(Optional.ofNullable(viagemExistente));
+
+        ViagemModel resultado = viagemService.getById(id);
+
+        assertNotNull(resultado, "O resultado não deve ser nulo.");
+        assertEquals(viagemExistente, resultado, "O resultado deve ser o mesmo objeto retornado pelo repositório.");
+        verify(viagemRepository, times(1)).findById(id);
+        verify(viagemRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("Viagem não é retornada quando não encontrada")
+    void getByIdCase2() {
+        long idInexistente = 1L;
+
+        when(viagemRepository.findById(idInexistente)).thenReturn(Optional.empty());
+
+        assertThrows(ViagemNotFoundException.class,
+                () -> viagemService.getById(idInexistente),
+                "Deve lançar ViagemNotFoundException quando a viagem não for encontrada.");
+
+        verify(viagemRepository, times(1)).findById(idInexistente);
+        verify(viagemRepository, never()).save(any());;
+    }
+
+
 
     // Criação de Viagem
 
