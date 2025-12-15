@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -110,7 +111,43 @@ class ViagemServiceTest {
         verify(viagemRepository, never()).save(any());;
     }
 
+    // Get by Date
 
+    @Test
+    @DisplayName("Viagens são retornadas com sucesso quando encontradas na data específica")
+    void getByDateCase1() {
+        LocalDate data = LocalDate.of(2025,12,20);
+
+        ViagemModel viagem1 = createViagem();
+        ViagemModel viagem2 = createViagem();
+        List<ViagemModel> viagensEsperadas = List.of(viagem1, viagem2);
+
+        when(viagemRepository.findByData(data)).thenReturn(viagensEsperadas);
+
+        List<ViagemModel> resultado = viagemService.findByData(data);
+
+        assertNotNull(resultado, "O resultado não deve ser nulo.");
+        assertEquals(viagensEsperadas, resultado, "O resultado deve ser o mesmo objeto retornado pelo repositório.");
+        verify(viagemRepository, times(1)).findByData(data);
+        verify(viagemRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("Não há viagens com a data informada")
+    void getByDateCase2() {
+        LocalDate data = LocalDate.of(2003,12,20);
+
+        List<ViagemModel> viagensEsperadas = List.of();
+
+        when(viagemRepository.findByData(data)).thenReturn(viagensEsperadas);
+
+        List<ViagemModel> resultado = viagemService.findByData(data);
+
+        assertNotNull(resultado, "O resultado não deve ser nulo.");
+        assertEquals(viagensEsperadas, resultado, "O resultado deve ser o mesmo objeto retornado pelo repositório.");
+        verify(viagemRepository, times(1)).findByData(data);
+        verify(viagemRepository, never()).save(any());
+    }
 
     // Criação de Viagem
 
