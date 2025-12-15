@@ -149,6 +149,50 @@ class ViagemServiceTest {
         verify(viagemRepository, never()).save(any());
     }
 
+    // Find by finalizadas
+
+    @Test
+    @DisplayName("Viagens finalizadas são retornadas com sucesso")
+    void findByFinalizadaCase1() {
+        List<ViagemModel> finalizadas = List.of(createViagem(), createViagem());
+
+        when(viagemRepository.findByFinalizada(true)).thenReturn(finalizadas);
+
+        List<ViagemModel> resultado = viagemService.findByFinalizada(true);
+
+        assertNotNull(resultado, "O resultado não deve ser nulo.");
+        assertEquals(2, resultado.size(), "Devem ser retornadas 2 viagens finalizadas.");
+        verify(viagemRepository, times(1)).findByFinalizada(true);
+    }
+
+    @Test
+    @DisplayName("Viagens abertas são retornadas com sucesso")
+    void findByFinalizadaCase2() {
+        List<ViagemModel> abertas = List.of(createViagem());
+
+        when(viagemRepository.findByFinalizada(false)).thenReturn(abertas);
+
+        List<ViagemModel> resultado = viagemService.findByFinalizada(false);
+
+        assertNotNull(resultado, "O resultado não deve ser nulo.");
+        assertEquals(1, resultado.size(), "Deve ser retornada 1 viagem aberta.");
+        verify(viagemRepository, times(1)).findByFinalizada(false);
+    }
+
+    @Test
+    @DisplayName("Nenhuma viagem é retornada para o status de finalização")
+    void findByFinalizadaCase3() {
+        List<ViagemModel> listaVazia = Collections.emptyList();
+
+        when(viagemRepository.findByFinalizada(true)).thenReturn(listaVazia);
+
+        List<ViagemModel> resultado = viagemService.findByFinalizada(true);
+
+        assertNotNull(resultado, "O resultado não deve ser nulo.");
+        assertTrue(resultado.isEmpty(), "Deve retornar uma lista vazia.");
+        verify(viagemRepository, times(1)).findByFinalizada(true);
+    }
+
     // Criação de Viagem
 
     @Test
