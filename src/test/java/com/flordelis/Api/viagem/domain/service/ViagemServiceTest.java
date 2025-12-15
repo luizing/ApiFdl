@@ -42,7 +42,7 @@ class ViagemServiceTest {
         return mock(FinalizarViagemDTO.class);
     }
 
-    //Criação de Viagem
+    // Criação de Viagem
 
     @Test
     @DisplayName("Viagem é criada com sucesso quando todas as condições são supridas")
@@ -152,4 +152,31 @@ class ViagemServiceTest {
         verify(viagemRepository, never()).save(any());
     }
 
+    // Remoção de Viagem
+
+    @Test
+    @DisplayName("Viagem é deletada com sucesso quando todas as condições são supridas")
+    void deletarCase1() {
+        long id = 1l;
+        ViagemModel viagemExistente = createViagem();
+
+        when(viagemRepository.findById(id)).thenReturn(Optional.of(viagemExistente));
+        viagemService.delete(id);
+
+        verify(viagemRepository, times(1)).findById(id);
+        verify(viagemRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    @DisplayName("Viagem falha ao ser deletada pois não é encontrada")
+    void deletarCase2() {
+        long idInexistente = 1l;
+        when(viagemRepository.findById(idInexistente)).thenReturn(Optional.empty());
+
+        assertThrows(ViagemNotFoundException.class,
+                () -> viagemService.delete(idInexistente),
+                "Deve lançar ViagemNotFoundException.");
+
+        verify(viagemRepository, never()).deleteById(any());
+    }
 }
