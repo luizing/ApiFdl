@@ -15,6 +15,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,6 +43,40 @@ class ViagemServiceTest {
 
     private FinalizarViagemDTO createFinalizarViagemDTO(){
         return mock(FinalizarViagemDTO.class);
+    }
+
+    // Get All Viagens
+
+    @Test
+    @DisplayName("Todas as viagens são retornadas")
+    void getAllCase1() {
+        ViagemModel viagem1 = createViagem();
+        ViagemModel viagem2 = createViagem();
+        List<ViagemModel> viagensEsperadas = List.of(viagem1, viagem2);
+
+        when(viagemRepository.findAll()).thenReturn(viagensEsperadas);
+
+        List<ViagemModel> resultado = viagemService.getAll();
+
+        assertNotNull(resultado, "O resultado não deve ser nulo.");
+        assertEquals(viagensEsperadas, resultado, "A lista de viagens retornada deve ser idêntica à lista esperada.");
+        verify(viagemRepository, times(1)).findAll();
+        verify(viagemRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("Nenhuma viagem é retornada")
+    void getAllCase2() {
+        List<ViagemModel> viagensEsperadas = Collections.emptyList();
+
+        when(viagemRepository.findAll()).thenReturn(viagensEsperadas);
+
+        List<ViagemModel> resultado = viagemService.getAll();
+
+        assertNotNull(resultado, "O resultado não deve ser nulo.");
+        assertEquals(viagensEsperadas, resultado, "A lista de viagens retornada deve ser idêntica à lista esperada.");
+        verify(viagemRepository, times(1)).findAll();
+        verify(viagemRepository, never()).save(any());
     }
 
     // Criação de Viagem
