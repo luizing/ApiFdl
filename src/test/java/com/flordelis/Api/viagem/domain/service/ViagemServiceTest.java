@@ -1,5 +1,6 @@
 package com.flordelis.Api.viagem.domain.service;
 
+import com.flordelis.Api.viagem.application.dto.CriarViagemDTO;
 import com.flordelis.Api.viagem.application.dto.FinalizarViagemDTO;
 import com.flordelis.Api.viagem.application.exception.RetornoBadQuantityException;
 import com.flordelis.Api.viagem.application.exception.ViagemAlreadyFinishedException;
@@ -13,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,17 +34,53 @@ class ViagemServiceTest {
         return mock(ViagemModel.class);
     }
 
-    private FinalizarViagemDTO createDTO(){
+    private CriarViagemDTO createCriarViagemDTO(){
+        return mock(CriarViagemDTO.class);
+    }
+
+    private FinalizarViagemDTO createFinalizarViagemDTO(){
         return mock(FinalizarViagemDTO.class);
     }
 
+    //Criação de Viagem
+
+    @Test
+    @DisplayName("Viagem é criada com sucesso quando todas as condições são supridas")
+    void criarCase1() {
+        ViagemModel novaViagem = createViagem();
+
+        when(viagemRepository.save(novaViagem)).thenReturn(novaViagem);
+
+        ViagemModel resultado = viagemService.create(novaViagem);
+
+        assertNotNull(resultado, "O resultado não deve ser nulo.");
+        assertEquals(novaViagem, resultado, "O resultado deve ser o mesmo objeto retornado pelo repositório.");
+        verify(viagemRepository, times(1)).save(resultado);
+    }
+
+    @Test
+    @DisplayName("Viagem falha na criação pois o repositorio falhou")
+    void criarCase2() {
+        ViagemModel novaViagem = createViagem();
+
+        RuntimeException dbException = new RuntimeException("Simulated DB error: Data integrity violation.");
+        when(viagemRepository.save(any (ViagemModel.class))).thenThrow(dbException);
+
+        assertThrows(RuntimeException.class,
+                () -> viagemService.create(novaViagem),
+                "O serviço deve propagar a exceção de tempo de execução do repositório.");
+
+        verify(viagemRepository, times(1)).save(novaViagem);
+    }
+
+    // Finalização de Viagem
 
     @Test
     @DisplayName("Viagem é finalizada com sucesso quando todas as condições são supridas")
     void finalizarCase1() {
         Long id = 1L;
         int cargaTotal = 100;
-        FinalizarViagemDTO dto = createDTO();
+        FinalizarViagemDTO dto = createFinalizarViagemDTO();
         ViagemModel viagemNaoFinalizada = createViagem();
 
         when(viagemNaoFinalizada.getCarga()).thenReturn(cargaTotal);
@@ -63,7 +101,7 @@ class ViagemServiceTest {
     @DisplayName("Viagem falha na finalização pois não foi encontrada")
     void finalizarCase2() {
         Long idInexistente = 99L;
-        FinalizarViagemDTO dto = createDTO();
+        FinalizarViagemDTO dto = createFinalizarViagemDTO();
 
         when(viagemRepository.findById(idInexistente)).thenReturn(Optional.empty());
 
@@ -78,7 +116,7 @@ class ViagemServiceTest {
     @DisplayName("Viagem falha na finalização pois já está finalizada")
     void finalizarCase3() {
         Long id = 1L;
-        FinalizarViagemDTO dto = createDTO();
+        FinalizarViagemDTO dto = createFinalizarViagemDTO();
         ViagemModel viagemFinalizada = createViagem();
 
         when(viagemFinalizada.isFinalizada()).thenReturn(true);
@@ -98,7 +136,7 @@ class ViagemServiceTest {
         Long id = 1L;
         int cargaTotal = 100;
         int cargaDto = 101;
-        FinalizarViagemDTO dtoBadQuantity = createDTO();
+        FinalizarViagemDTO dtoBadQuantity = createFinalizarViagemDTO();
         ViagemModel viagemNaoFinalizada = createViagem();
 
         when(viagemNaoFinalizada.getCarga()).thenReturn(cargaTotal);
